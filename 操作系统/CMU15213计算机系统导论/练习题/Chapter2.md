@@ -1,3 +1,5 @@
+# Information Storage
+
 | N    | 2^1  | 2^2  |      | 2^3  |      |      |      |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | DEC  | 2    | 4    | 6    | 8    | 10   | 12   | 14   |
@@ -224,6 +226,8 @@ a=0x55 b=0x46
 | 0x72 | 0111 0010 | 1100 1000 | 0xC8   | 0000 1110        | 0x0E             | 0000 1110  | 0x0E       |
 | 0x44 | 0100 0100 | 0001 0000 | 0x10   | 0000 1000        | 0x08             | 0000 1000  | 0x08       |
 
+# Integer Prepresentations
+
 ## 2.17
 
 | Hex  | Binary | B2U      | B2T       |
@@ -323,6 +327,8 @@ int fun2(unsigned word) {
 
 `i <= length - 1` change to `i < length`
 
+# Integer Arithmetic
+
 ## 2.27
 
 ```c
@@ -393,3 +399,117 @@ int tusb_ok(int x, int y) {
 | 9 1001 | 10111 = -9  | 7       | 7    |
 | B 1011 | 10101 = -11 | 5       | 5    |
 | C 1100 | 10100 = -12 | 4       | 4    |
+
+## 2.34
+
+| Mode             | x      | y      | x * y        | Truncated x * y |
+| ---------------- | ------ | ------ | ------------ | --------------- |
+| Unsigned         | 100 4  | 101 5  | 10100 = 20   | 100 = 4         |
+| Tow's complement | 100 -4 | 101 -3 | 01100 = 12   | 100 = -4        |
+| Unsigned         | 010 2  | 111 7  | 01110 = 14   | 110 = 6         |
+| Tow's complement | 010 2  | 111 -1 | 110 = -2     | 110 = -2        |
+| Unsigned         | 110 6  | 110 6  | 0100100 = 36 | 100 = 4         |
+| Tow's complement | 110 -2 | 110 -2 | 100 = 4      | 100 = -4        |
+
+## 2.36
+
+```c
+int tmult_ok(int x, int y) {
+    int64_t p = (int64_t) (x * y);
+    return p == (int)p;
+}
+```
+
+## 2.37
+
+A. malloc(int x) will convert 64bit to 32bit, so it will be overflow.
+
+B. when overflow, just return null.
+
+```c
+uint64_t required_size = ele_cnt * (uint64_t) ele_size;
+size_t request_size = (size_t) required_size;
+if (required_size != request_size)
+    /* Overflow must have occurred. Abort operation */
+    return NULL;
+void *result = malloc(request_size);
+```
+
+## 2.38
+
+2^k or 2^k+1 
+
+k=0 -> 1,2
+
+k=1 -> 2,3
+
+k=2 -> 4,5
+
+k=3 -> 8,9
+
+## 2.39
+
+n=31 x<<n+1=0 
+
+(x<<(n + 1)) - (x<<m) = - (x<<m)
+
+## 2.40
+
+x*k
+
+| K    | Shifts | Add/Subs | Expression                  |
+| ---- | ------ | -------- | --------------------------- |
+| 7    | 1      | 1        | x<<3-x                      |
+| 30   | 4      | 3        | (x<<4)+(x<<3)+(x<<2)+(x<<1) |
+| 28   | 2      | 1        | (x<<5)-(x<<2)               |
+| 55   | 2      | 2        | (x<<6)-(x<<3)-x             |
+
+## 2.41
+
+which operate less
+
+## 2.42
+
+```c
+int div16(int x) {
+    int bias = (x >> 31) & 0xF;
+    return (x + bias) >> 4;
+}
+```
+
+## 2.43
+
+M=31,N=8
+
+## 2.44
+
+A.False x=min_value
+
+B.True
+
+C.false overflow
+
+D.True
+
+E. False x=min_value
+
+F. True
+
+G. True
+
+# Floating Point
+
+## 2.45
+
+| Fractional value | Binary representation | Decimal representation |
+| ---------------- | --------------------- | ---------------------- |
+| 1/8              | 0.001                 | 0.125                  |
+| 3/4              | 0.11                  | 0.75                   |
+| 5/16             | 0.0101                | 0.3125                 |
+| 2 11/16          | 10.1011               | 0.6875                 |
+| 1 1/8            | 1.001                 | 1.125                  |
+| 5 7/8            | 101.111               | 5.875                  |
+| 3 3/16           | 11.0011               | 3.1875                 |
+
+
+
