@@ -89,3 +89,141 @@ short scale3(short x, short y, short z) {
 
 ## 3.8
 
+| Instruction             | Destinatino | Value |
+| ----------------------- | ----------- | ----- |
+| addq %rcx,(%rax)        | 0x100       | 0x100 |
+| subq %rdx,8(%rax)       | 0x108       | 0xA8  |
+| imulq $16,(%rax,%rdx,8) | 0x118       | 0x110 |
+| incq 16(%rax)           | 0x110       | 0x14  |
+| decq %rcx               | %rcx        | 0x0   |
+| subq %rdx,%rax          | %rax        | 0xFD  |
+
+## 3.9
+
+```assembly
+shift_left4_rightn:
+	movq %rdi, %rax # Get x
+	salq $4, %rax # x <<= 4
+	movl %esi, %ecx # Get n (4 bytes)
+	sarq %cl, %rax # x >>= n
+```
+
+## 3.10
+
+```c
+short p1 = y | z;
+short p2 = p1 >> 9;
+short p3 = ~p2;
+short p4 = y - p3;
+```
+
+## 3.11
+
+A. x = 0
+
+B. movq $0,%rcx.
+
+C. movl $0,%ecx
+
+## 3.12
+
+```assembly
+uremdiv:
+	movq %rdx, %r8 Copy qp
+	movq %rdi, %rax Move x to lower 8 bytes of dividend
+	movl $0, %edx #Set upper 8 bytes of dividend to 0
+	divq %rsi #Divide by y
+	movq %rax, (%r8) #Store quotient at qp
+	movq %rdx, (%rcx) #Store remainder at rp
+	ret
+```
+
+## 3.13
+
+A. < int
+
+B. >= short
+
+C. <= unsigned char
+
+D. != long, unsigned long, pointer
+
+## 3.14
+
+A. >= long
+
+B. == short, unsigned short
+
+C. > unsigned char
+
+D. < int
+
+## 3.15
+
+A. 0x4003fc + 0x02 = 0x4003fe
+
+B. 0x0x400431 − 12 = 0x400425
+
+C. 400543 400545
+
+D. 4005e8 - 141 = 400560
+
+## 3.16
+
+```c
+void goto_cond(short a, short *p) {
+    if (a == 0) {
+        goto done;
+    }
+    if (*p >= a) {
+        goto done;
+    }
+    *p = a;
+done:
+    return;
+}
+
+```
+
+B. && If first condition is false, will skip second condition
+
+## 3.17
+
+```c
+long gotodiff_se_alt(long x, long y) {
+    long result;
+    if (x < y)
+    	goto x_lt_y;
+    ge_cnt++;
+    result = x - y;
+    return result;
+x_lt_y:
+    lt_cnt++;
+    result = y - x;
+    return result;
+}
+```
+
+## 3.18
+
+```c
+short test(short x, short y, short z) {
+    short val = y + z - x;
+    if (z > 5) {
+        if (y > 2) {
+            val = x / z;
+        } else {
+            val = x / y;
+        }
+    } else if (z < 3) {
+        val = z / y;
+    }
+    return val;
+}
+```
+
+## 3.19
+
+A. 2*(45-25) = 40
+
+B. 25+40 = 65
