@@ -227,3 +227,40 @@ short test(short x, short y, short z) {
 A. 2*(45-25) = 40
 
 B. 25+40 = 65
+
+## 3.20
+
+```assembly
+arith:
+	leaq	15(%rdi), %rbx	# temp = x + 15
+	testq	%rdi, %rdi	# Test x
+	cmovns	%rdi, %rbx	# If x >= 0, temp = x
+	sarq	$4,	$rbx	# result = temp >> 4
+```
+
+A. OP=/
+
+## 3.21
+
+```c
+short test(short x, short y) {
+    short val = 12 + y;
+    if (x < 0) {
+        if (x < y) {
+            val = x * y;
+        } else {
+            val = x | y;
+        }
+    } else if (y > 10) {
+        val = x / y;
+    }
+    return val;
+} 
+```
+
+## 3.22
+
+A. overflow
+
+B. not overflow
+
